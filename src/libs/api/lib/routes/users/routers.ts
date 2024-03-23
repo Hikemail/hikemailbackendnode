@@ -48,7 +48,7 @@ export const usersRouter = new Hono()
     name += "%";
 
     const queryText =
-      "SELECT * FROM applications WHERE userid = $1 AND company LIKE $2";
+      "SELECT * FROM applications WHERE userid = $1 AND lower(company) LIKE lower($2)";
     const queryValues = [id, name];
 
     try {
