@@ -78,7 +78,7 @@ export const usersRouter = new Hono()
     const { username, email, password } = c.req.valid("json");
 
     const queryText =
-      "INSERT INTO users(username, email, password) VALUES($1, $2, $3) RETURNING *";
+      "INSERT INTO users(username, email, password) VALUES($1, $2, $3) RETURNING id";
     const queryValues = [username, email, password];
 
     try {
