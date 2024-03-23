@@ -45,8 +45,6 @@ export const applicationsRouter = new Hono()
   .post("/", zValidator("json", CreateApplicationSchema), async (c) => {
     const { role, userid, company, status } = c.req.valid("json");
 
-    console.log("Values: ", role, userid, company, status);
-
     const queryText =
       "INSERT INTO applications(role, company, userid, status) VALUES($1, $2, $3, $4) RETURNING *";
     const queryValues = [role, company, userid, status];
