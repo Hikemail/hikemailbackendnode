@@ -43,6 +43,37 @@ export const usersRouter = new Hono()
       }
     },
   )
+  .get("/searchApplications/:id/:name", async (c) => {
+    let { id, name } = c.req.param();
+    name += "%";
+
+    const queryText =
+      "SELECT * FROM applications WHERE userid = $1 AND company LIKE $2";
+    const queryValues = [id, name];
+
+    try {
+      const res = await pool.query(queryText, queryValues);
+      return c.json(res);
+    } catch (err) {
+      console.log(err);
+      return c.json(err);
+    }
+  })
+  .get("/filterApplications/:id/:status", async (c) => {
+    const { id, status } = c.req.param();
+
+    const queryText =
+      "SELECT * FROM applications WHERE userid = $1 AND status = $2";
+    const queryValues = [id, status];
+
+    try {
+      const res = await pool.query(queryText, queryValues);
+      return c.json(res);
+    } catch (err) {
+      console.log(err);
+      return c.json(err);
+    }
+  })
   .post("/", zValidator("json", CreateUserSchema), async (c) => {
     const { username, email, password } = c.req.valid("json");
 
