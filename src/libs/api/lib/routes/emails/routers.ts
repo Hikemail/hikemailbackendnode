@@ -92,7 +92,11 @@ export const emailRouter = new Hono()
               "UPDATE applications SET status = $1 WHERE id = $2";
             const queryValues = [status, applicationId];
             await pool.query(queryText, queryValues);
-          } else {
+          } else if (status == 0 && application.status == 0) {
+            const queryText =
+              "UPDATE applications SET status = 1 WHERE id = $1";
+            const queryValues = [applicationId];
+            await pool.query(queryText, queryValues);
           }
         } catch (err) {
           console.log(err);
